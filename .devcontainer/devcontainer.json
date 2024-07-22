@@ -21,9 +21,9 @@
 		"--group-add=plugdev",
 		"--volume=${localWorkspaceFolder}/studio-data/profile/AndroidStudio2022.3.1.20:/studio-data/profile/AndroidStudio2022.3.1.20",
 		"--volume=${localWorkspaceFolder}/studio-data/Android:/studio-data/Android",
-		"--volume=${localWorkspaceFolder}/studio-data/profile/.android:/studio-data/profile/.android",
-		"--volume=${localWorkspaceFolder}/studio-data/profile/.java:/studio-data/profile/.java",
-		"--volume=${localWorkspaceFolder}/studio-data/profile/.gradle:/studio-data/profile/.gradle",
+		"--volume=${localWorkspaceFolder}/studio-data/profile/android:/studio-data/profile/android",
+		"--volume=${localWorkspaceFolder}/studio-data/profile/java:/studio-data/profile/java",
+		"--volume=${localWorkspaceFolder}/studio-data/profile/gradle:/studio-data/profile/gradle",
 		"--volume=${localWorkspaceFolder}/android_studio:/androidstudio-data"
 	]
 

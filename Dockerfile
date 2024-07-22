@@ -70,10 +70,9 @@ RUN rm android-studio.tar.gz
 
 RUN ln -s /studio-data/profile/AndroidStudio$ANDROID_STUDIO_VERSION .AndroidStudio$ANDROID_STUDIO_VERSION
 RUN ln -s /studio-data/Android Android
-RUN ln -s /studio-data/profile/.android .android
-# RUN mkdir -p .java .gradle
-RUN ln -s /studio-data/profile/.java .java
-RUN ln -s /studio-data/profile/.gradle .gradle
+RUN ln -s /studio-data/profile/android .android
+RUN ln -s /studio-data/profile/java .java
+RUN ln -s /studio-data/profile/gradle .gradle
 ENV ANDROID_EMULATOR_USE_SYSTEM_LIBS=1
 
 COPY provisioning/docker_entrypoint.sh /usr/local/bin/docker_entrypoint.sh
