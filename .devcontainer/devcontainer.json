@@ -1,0 +1,44 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
+{
+	"name": "Existing Dockerfile",
+	"build": {
+		// Sets the run context to one level up instead of the .devcontainer folder.
+		"context": "..",
+		// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
+		"dockerfile": "../Dockerfile"
+	},
+
+	"runArgs": [
+		// Display
+		"--env", "DISPLAY=${localEnv:DISPLAY}",
+		"--volume", "/tmp/.X11-unix:/tmp/.X11-unix",
+		// "--volume", "/home/nir/proj/android-studio-docker/studio-data:/studio-data",
+		// "--volume", "android_studio:/androidstudio-data",
+		"--privileged",
+		// "--group-add", "plugdev",
+		// "--group-add", "kvm",
+		"--group-add=plugdev",
+		"--volume=${localWorkspaceFolder}/studio-data/profile/AndroidStudio2022.3.1.20:/studio-data/profile/AndroidStudio2022.3.1.20",
+		"--volume=${localWorkspaceFolder}/studio-data/Android:/studio-data/Android",
+		"--volume=${localWorkspaceFolder}/studio-data/profile/.android:/studio-data/profile/.android",
+		"--volume=${localWorkspaceFolder}/studio-data/profile/.java:/studio-data/profile/.java",
+		"--volume=${localWorkspaceFolder}/studio-data/profile/.gradle:/studio-data/profile/.gradle",
+		"--volume=${localWorkspaceFolder}/android_studio:/androidstudio-data"
+	]
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Uncomment the next line to run commands after the container is created.
+	// "postCreateCommand": "cat /etc/os-release",
+
+	// Configure tool-specific properties.
+	// "customizations": {},
+
+	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "devcontainer"
+}

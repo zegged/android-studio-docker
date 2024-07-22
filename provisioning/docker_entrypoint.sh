@@ -17,4 +17,9 @@ if [ -z "$args" ]; then
   args="~/android-studio/bin/studio.sh"
 fi
 
-exec $args
+# exec $args
+# Start bash and keep the container running
+/bin/bash
+ 
+ 
+ 

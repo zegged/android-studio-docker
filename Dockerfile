@@ -1,15 +1,16 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 LABEL Simon Egli <docker_android_studio_860dd6@egli.online>
 
 ARG USER=android
+# ARG USER=root
 
 RUN dpkg --add-architecture i386
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
         build-essential git neovim wget unzip sudo \
         libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386 \
         libxrender1 libxtst6 libxi6 libfreetype6 libxft2 xz-utils vim\
-        qemu qemu-kvm libvirt-bin ubuntu-vm-builder bridge-utils libnotify4 libglu1 libqt5widgets5 openjdk-8-jdk openjdk-11-jdk xvfb \
+        qemu qemu-kvm libvirt-daemon-system bridge-utils libnotify4 libglu1 libqt5widgets5 openjdk-8-jdk openjdk-11-jdk xvfb \
         && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -34,14 +35,22 @@ RUN mkdir -p /studio-data/Android/Sdk && \
 RUN mkdir -p /studio-data/profile/android && \
     chown -R $USER:$USER /studio-data/profile
 
-COPY provisioning/docker_entrypoint.sh /usr/local/bin/docker_entrypoint.sh
 COPY provisioning/ndkTests.sh /usr/local/bin/ndkTests.sh
 RUN chmod +x /usr/local/bin/*
 COPY provisioning/51-android.rules /etc/udev/rules.d/51-android.rules
 
+# RUN chown android /dev/kvm
+
+RUN apt-get update && apt-get install -y cmake
+
+RUN echo "export PATH=\"\$PATH:/home/$USER/flutter/bin\"" >> /home/$USER/.bashrc
+RUN echo "alias studio=/home/$USER/android-studio/bin/studio.sh" >> /home/$USER/.bashrc
+
+
 USER $USER
 
 WORKDIR /home/$USER
+# WORKDIR /home/root
 
 #Install Flutter
 ARG FLUTTER_URL=https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.13.6-stable.tar.xz
@@ -61,11 +70,22 @@ RUN rm android-studio.tar.gz
 
 RUN ln -s /studio-data/profile/AndroidStudio$ANDROID_STUDIO_VERSION .AndroidStudio$ANDROID_STUDIO_VERSION
 RUN ln -s /studio-data/Android Android
-RUN ln -s /studio-data/profile/android .android
-RUN ln -s /studio-data/profile/java .java
-RUN ln -s /studio-data/profile/gradle .gradle
+RUN ln -s /studio-data/profile/.android .android
+# RUN mkdir -p .java .gradle
+RUN ln -s /studio-data/profile/.java .java
+RUN ln -s /studio-data/profile/.gradle .gradle
 ENV ANDROID_EMULATOR_USE_SYSTEM_LIBS=1
 
+COPY provisioning/docker_entrypoint.sh /usr/local/bin/docker_entrypoint.sh
 WORKDIR /home/$USER
 
+
+
+
+
+# RUN sudo chown android /dev/kvm
+
+# Add flutter to root bashrc
+# RUN echo "export PATH=\"\$PATH:/home/root/flutter/bin\"" >> /"$USER"/.bashrc
+# RUN echo "alias studio=/home/root/android-studio/bin/studio.sh" >> /"$USER"/.bashrc
 ENTRYPOINT [ "/usr/local/bin/docker_entrypoint.sh" ]
